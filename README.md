@@ -24,7 +24,7 @@ In your system `flake.nix` inputs:
     nixpkgs.url = "github:NixOS/nixpkgs?shallow=1&ref=nixos-26.05";
     
     nix-mcp = {
-      url = "path:/home/klein-moretti/nix-mcp"; # Or github:username/nix-mcp
+      url = "path:/home/klein-moretti/nix-mcp"; # Or github:XiaoXioe/nix-mcp
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
