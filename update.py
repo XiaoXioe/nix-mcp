@@ -26,6 +26,11 @@ PACKAGES = {
         "type": "pypi",
         "file": "pkgs/telegram-mcp/default.nix",
         "pypi_name": "telegram-mcp-jgalea"
+    },
+    "github-mcp-server": {
+        "type": "github",
+        "file": "pkgs/github-mcp-server/default.nix",
+        "repo": "github/github-mcp-server"
     }
 }
 
