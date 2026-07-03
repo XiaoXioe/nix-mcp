@@ -10,6 +10,7 @@ This flake allows you to run MCP servers hermetically and declaratively in NixOS
 *   **`codebase-memory-mcp`**: High-performance local codebase indexing and memory search.
 *   **`google-colab-mcp`**: Run code cells and manage Google Colab notebooks directly from your AI agent.
 *   **`telegram-mcp`**: Direct personal account access using MTProto (Telethon), equipped with a Python-based wrapper to ensure daemon background processes spawn correctly without `-c` wrapper errors.
+*   **`github-mcp-server`**: Direct integration with GitHub's APIs for managing issues, pull requests, repositories, and more.
 
 ---
 
