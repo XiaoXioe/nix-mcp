@@ -24,6 +24,7 @@
           google-colab-mcp = pkgs.callPackage ./pkgs/google-colab-mcp/default.nix {};
           telegram-mcp = pkgs.callPackage ./pkgs/telegram-mcp/default.nix {};
           github-mcp-server = pkgs.callPackage ./pkgs/github-mcp-server/default.nix {};
+          tavily-mcp = pkgs.callPackage ./pkgs/tavily-mcp/default.nix {};
         }
       );
     };
