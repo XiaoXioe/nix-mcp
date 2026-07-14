@@ -12,12 +12,12 @@ pkgs.stdenv.mkDerivation rec {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-TQfsmW/8lqFFhuY0sYSGxLXCNXm0AoJ9V5NF6vUakng=";
+        outputHash = "sha256-QT1mph/jSFkcjT+4VBiwfun4AjRRNlx8QPtRkkdnmns="; # Dummy hash
       }
       ''
         export HOME=$TMPDIR
-        mkdir -p $out/lib
-        cd $out/lib
+        mkdir -p $out/lib/tavily-mcp
+        cd $out/lib/tavily-mcp
         npm install --no-audit --no-fund --production tavily-mcp@${version}
       '';
 
@@ -26,11 +26,9 @@ pkgs.stdenv.mkDerivation rec {
   dontUnpack = true;
 
   installPhase = ''
-    mkdir -p $out/bin $out/lib
-    cp -r $src/lib/node_modules $out/lib/node_modules
-    chmod -R +w $out/lib/node_modules
-    rm -f $out/lib/node_modules/.package-lock.json
+    mkdir -p $out/bin $out/lib/tavily-mcp
+    ln -s $src/lib/tavily-mcp/node_modules $out/lib/tavily-mcp/node_modules
     makeWrapper ${pkgs.nodejs}/bin/node $out/bin/tavily-mcp \
-      --add-flags "$out/lib/node_modules/tavily-mcp/build/index.js"
+      --add-flags "$out/lib/tavily-mcp/node_modules/tavily-mcp/build/index.js"
   '';
 }
