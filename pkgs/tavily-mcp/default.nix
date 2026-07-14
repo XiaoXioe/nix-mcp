@@ -27,7 +27,9 @@ pkgs.stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/bin $out/lib
-    ln -s $src/lib/node_modules $out/lib/node_modules
+    cp -r $src/lib/node_modules $out/lib/node_modules
+    chmod -R +w $out/lib/node_modules
+    rm -f $out/lib/node_modules/.package-lock.json
     makeWrapper ${pkgs.nodejs}/bin/node $out/bin/tavily-mcp \
       --add-flags "$out/lib/node_modules/tavily-mcp/build/index.js"
   '';
