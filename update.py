@@ -31,6 +31,11 @@ PACKAGES = {
         "type": "github",
         "file": "pkgs/github-mcp-server/default.nix",
         "repo": "github/github-mcp-server"
+    },
+    "tavily-mcp": {
+        "type": "npm",
+        "file": "pkgs/tavily-mcp/default.nix",
+        "npm_name": "tavily-mcp"
     }
 }
 
