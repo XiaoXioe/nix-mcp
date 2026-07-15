@@ -1,7 +1,7 @@
 { pkgs, ... }:
 pkgs.stdenv.mkDerivation rec {
   pname = "tavily-mcp";
-  version = "0.2.20";
+  version = "0.2.21";
 
   src =
     pkgs.runCommand "tavily-mcp-src"
@@ -12,7 +12,7 @@ pkgs.stdenv.mkDerivation rec {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-QT1mph/jSFkcjT+4VBiwfun4AjRRNlx8QPtRkkdnmns="; # Dummy hash
+        outputHash = "sha256-2dD0N7M+QJz1MPfj5jlNRewkI42y9zXasS/37P6Cepo="; # Dummy hash
       }
       ''
         export HOME=$TMPDIR
