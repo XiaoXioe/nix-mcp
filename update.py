@@ -33,9 +33,14 @@ PACKAGES = {
         "repo": "github/github-mcp-server"
     },
     "tavily-mcp": {
-        "type": "npm",
         "file": "pkgs/tavily-mcp/default.nix",
-        "npm_name": "tavily-mcp"
+        "npm_name": "tavily-mcp",
+        "type": "npm"
+    },
+    "server-memory": {
+        "file": "pkgs/server-memory/default.nix",
+        "npm_name": "@modelcontextprotocol/server-memory",
+        "type": "npm"
     }
 }
 
