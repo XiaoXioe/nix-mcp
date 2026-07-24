@@ -5,13 +5,18 @@
     nixpkgs.url = "github:NixOS/nixpkgs?shallow=1&ref=nixos-26.05";
   };
 
-  outputs = { self, nixpkgs, ... }:
+  outputs =
+    { self, nixpkgs, ... }:
     let
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     in
     {
-      packages = forAllSystems (system:
+      packages = forAllSystems (
+        system:
         let
           pkgs = import nixpkgs {
             inherit system;
@@ -19,13 +24,14 @@
           };
         in
         {
-          ssh-mcp = pkgs.callPackage ./pkgs/ssh-mcp/default.nix {};
-          codebase-memory-mcp = pkgs.callPackage ./pkgs/codebase-memory-mcp/default.nix {};
-          google-colab-mcp = pkgs.callPackage ./pkgs/google-colab-mcp/default.nix {};
-          telegram-mcp = pkgs.callPackage ./pkgs/telegram-mcp/default.nix {};
-          github-mcp-server = pkgs.callPackage ./pkgs/github-mcp-server/default.nix {};
-          tavily-mcp = pkgs.callPackage ./pkgs/tavily-mcp/default.nix {};
-          server-memory = pkgs.callPackage ./pkgs/server-memory/default.nix {};
+          ssh-mcp = pkgs.callPackage ./pkgs/ssh-mcp/default.nix { };
+          codebase-memory-mcp = pkgs.callPackage ./pkgs/codebase-memory-mcp/default.nix { };
+          google-colab-mcp = pkgs.callPackage ./pkgs/google-colab-mcp/default.nix { };
+          telegram-mcp = pkgs.callPackage ./pkgs/telegram-mcp/default.nix { };
+          github-mcp-server = pkgs.callPackage ./pkgs/github-mcp-server/default.nix { };
+          tavily-mcp = pkgs.callPackage ./pkgs/tavily-mcp/default.nix { };
+          server-memory = pkgs.callPackage ./pkgs/server-memory/default.nix { };
+          sequential-thinking = pkgs.callPackage ./pkgs/sequential-thinking/default.nix { };
         }
       );
     };

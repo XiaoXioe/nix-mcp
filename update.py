@@ -41,6 +41,11 @@ PACKAGES = {
         "file": "pkgs/server-memory/default.nix",
         "npm_name": "@modelcontextprotocol/server-memory",
         "type": "npm"
+    },
+    "sequential-thinking": {
+        "file": "pkgs/sequential-thinking/default.nix",
+        "npm_name": "@modelcontextprotocol/server-sequential-thinking",
+        "type": "npm"
     }
 }
 
