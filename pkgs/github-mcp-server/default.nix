@@ -1,7 +1,7 @@
 { pkgs, ... }:
 pkgs.stdenv.mkDerivation rec {
   pname = "github-mcp-server";
-  version = "1.7.0";
+  version = "1.8.0";
 
   src = pkgs.runCommand "${pname}-src"
     {
@@ -11,7 +11,7 @@ pkgs.stdenv.mkDerivation rec {
       ];
       outputHashAlgo = "sha256";
       outputHashMode = "recursive";
-      outputHash = "sha256-M/eRueThhuvMqb5+TN/DMAJX327MTWTfzcyHS/ZBHzA=";
+      outputHash = "sha256-6yx+zKL7gAQYl0YgAsdbS1aQAedBhtb4zmIlZv5vfms=";
     }
     ''
       export HOME=$TMPDIR
