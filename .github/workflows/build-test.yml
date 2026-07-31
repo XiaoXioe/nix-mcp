@@ -1,0 +1,22 @@
+name: Build Test MCP Packages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+
+      - name: Build docker-hub-mcp
+        run: |
+          nix build .#docker-hub-mcp --no-link || (nix log .#docker-hub-mcp && exit 1)

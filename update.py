@@ -51,6 +51,11 @@ PACKAGES = {
         "file": "pkgs/sequential-thinking/default.nix",
         "npm_name": "@modelcontextprotocol/server-sequential-thinking",
         "type": "npm"
+    },
+    "docker-hub-mcp": {
+        "type": "github",
+        "file": "pkgs/docker-hub-mcp/default.nix",
+        "repo": "docker/hub-mcp"
     }
 }
 
