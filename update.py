@@ -42,6 +42,11 @@ PACKAGES = {
         "npm_name": "@modelcontextprotocol/server-memory",
         "type": "npm"
     },
+    "agentmemory": {
+        "file": "pkgs/agentmemory/default.nix",
+        "npm_name": "@agentmemory/mcp",
+        "type": "npm"
+    },
     "sequential-thinking": {
         "file": "pkgs/sequential-thinking/default.nix",
         "npm_name": "@modelcontextprotocol/server-sequential-thinking",

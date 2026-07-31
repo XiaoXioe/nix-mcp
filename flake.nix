@@ -31,6 +31,7 @@
           github-mcp-server = pkgs.callPackage ./pkgs/github-mcp-server/default.nix { };
           tavily-mcp = pkgs.callPackage ./pkgs/tavily-mcp/default.nix { };
           server-memory = pkgs.callPackage ./pkgs/server-memory/default.nix { };
+          agentmemory = pkgs.callPackage ./pkgs/agentmemory/default.nix { };
           sequential-thinking = pkgs.callPackage ./pkgs/sequential-thinking/default.nix { };
         }
       );
