@@ -10,6 +10,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - ssh-mcp
+          - codebase-memory-mcp
+          - google-colab-mcp
+          - telegram-mcp
+          - github-mcp-server
+          - tavily-mcp
+          - server-memory
+          - agentmemory
+          - sequential-thinking
+          - docker-hub-mcp
+      fail-fast: false
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,6 +31,12 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v25
 
-      - name: Build docker-hub-mcp
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: nix-mcp
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Build package
         run: |
-          nix build .#docker-hub-mcp --no-link || (nix log .#docker-hub-mcp && exit 1)
+          nix build ".#packages.x86_64-linux.${{ matrix.package }}" --no-link
