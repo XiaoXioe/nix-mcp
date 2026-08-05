@@ -20,7 +20,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-+Xu+QlRBMl6sgYDZC6LReb0TowXP7iMnrxJCeuxPsGs=";
+        outputHash = "sha256-bbiT4HzYVL3Im5djigiyTgJMdd8CqsYGL8aZg2Wm44Y=";
       }
       ''
         export HOME=$TMPDIR
