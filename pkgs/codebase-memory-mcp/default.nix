@@ -1,23 +1,31 @@
-{ pkgs, ... }:
-pkgs.stdenv.mkDerivation rec {
+{
+  lib,
+  stdenv,
+  fetchurl,
+  autoPatchelfHook,
+  prelink,
+  zlib,
+}:
+
+stdenv.mkDerivation (finalAttrs: {
   pname = "codebase-memory-mcp";
   version = "0.9.0";
 
-  src = pkgs.fetchurl {
-    url = "https://github.com/DeusData/codebase-memory-mcp/releases/download/v${version}/codebase-memory-mcp-linux-amd64.tar.gz";
+  src = fetchurl {
+    url = "https://github.com/DeusData/codebase-memory-mcp/releases/download/v${finalAttrs.version}/codebase-memory-mcp-linux-amd64.tar.gz";
     sha256 = "sha256-4oMqjSB8Jr6qMO+mIi7Uo3yz9SbKS+4GC/vzNu1vxnk=";
   };
 
   sourceRoot = ".";
 
   nativeBuildInputs = [
-    pkgs.autoPatchelfHook
-    pkgs.prelink
+    autoPatchelfHook
+    prelink
   ];
 
   buildInputs = [
-    pkgs.stdenv.cc.cc.lib
-    pkgs.zlib
+    stdenv.cc.cc.lib
+    zlib
   ];
 
   installPhase = ''
@@ -26,4 +34,12 @@ pkgs.stdenv.mkDerivation rec {
     chmod +x $out/bin/codebase-memory-mcp
     execstack -c $out/bin/codebase-memory-mcp
   '';
-}
+
+  meta = {
+    description = "High-performance local codebase indexing and memory search";
+    homepage = "https://github.com/DeusData/codebase-memory-mcp";
+    license = lib.licenses.mit;
+    mainProgram = "codebase-memory-mcp";
+    platforms = [ "x86_64-linux" ];
+  };
+})

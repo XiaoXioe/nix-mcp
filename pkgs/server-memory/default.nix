@@ -1,14 +1,22 @@
-{ pkgs, ... }:
-pkgs.stdenv.mkDerivation rec {
+{
+  lib,
+  stdenv,
+  runCommand,
+  nodejs,
+  cacert,
+  makeWrapper,
+}:
+
+stdenv.mkDerivation (finalAttrs: {
   pname = "server-memory";
   version = "2026.7.4";
 
   src =
-    pkgs.runCommand "server-memory-src"
+    runCommand "server-memory-src"
       {
         nativeBuildInputs = [
-          pkgs.nodejs
-          pkgs.cacert
+          nodejs
+          cacert
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
@@ -18,17 +26,25 @@ pkgs.stdenv.mkDerivation rec {
         export HOME=$TMPDIR
         mkdir -p $out/lib/server-memory
         cd $out/lib/server-memory
-        npm install --no-audit --no-fund --production @modelcontextprotocol/server-memory@${version}
+        npm install --no-audit --no-fund --production @modelcontextprotocol/server-memory@${finalAttrs.version}
       '';
 
-  nativeBuildInputs = [ pkgs.makeWrapper ];
+  nativeBuildInputs = [ makeWrapper ];
 
   dontUnpack = true;
 
   installPhase = ''
     mkdir -p $out/bin $out/lib/server-memory
     ln -s $src/lib/server-memory/node_modules $out/lib/server-memory/node_modules
-    makeWrapper ${pkgs.nodejs}/bin/node $out/bin/mcp-server-memory \
+    makeWrapper ${nodejs}/bin/node $out/bin/mcp-server-memory \
       --add-flags "$out/lib/server-memory/node_modules/@modelcontextprotocol/server-memory/dist/index.js"
   '';
-}
+
+  meta = {
+    description = "MCP server for enabling memory for Claude through a knowledge graph";
+    homepage = "https://github.com/modelcontextprotocol/servers/tree/main/src/memory";
+    license = lib.licenses.mit;
+    mainProgram = "mcp-server-memory";
+    platforms = lib.platforms.all;
+  };
+})

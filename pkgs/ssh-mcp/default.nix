@@ -1,14 +1,22 @@
-{ pkgs, ... }:
-pkgs.stdenv.mkDerivation rec {
+{
+  lib,
+  stdenv,
+  runCommand,
+  nodejs,
+  cacert,
+  makeWrapper,
+}:
+
+stdenv.mkDerivation (finalAttrs: {
   pname = "ssh-mcp";
   version = "1.5.0";
 
   src =
-    pkgs.runCommand "ssh-mcp-src"
+    runCommand "ssh-mcp-src"
       {
         nativeBuildInputs = [
-          pkgs.nodejs
-          pkgs.cacert
+          nodejs
+          cacert
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
@@ -18,17 +26,25 @@ pkgs.stdenv.mkDerivation rec {
         export HOME=$TMPDIR
         mkdir -p $out/lib
         cd $out/lib
-        npm install --no-audit --no-fund --production ssh-mcp@${version}
+        npm install --no-audit --no-fund --production ssh-mcp@${finalAttrs.version}
       '';
 
-  nativeBuildInputs = [ pkgs.makeWrapper ];
+  nativeBuildInputs = [ makeWrapper ];
 
   dontUnpack = true;
 
   installPhase = ''
     mkdir -p $out/bin $out/lib
     ln -s $src/lib/node_modules $out/lib/node_modules
-    makeWrapper ${pkgs.nodejs}/bin/node $out/bin/ssh-mcp \
+    makeWrapper ${nodejs}/bin/node $out/bin/ssh-mcp \
       --add-flags "$out/lib/node_modules/ssh-mcp/build/index.js"
   '';
-}
+
+  meta = {
+    description = "MCP server exposing SSH control for Linux and Windows systems";
+    homepage = "https://github.com/tufantunc/ssh-mcp";
+    license = lib.licenses.mit;
+    mainProgram = "ssh-mcp";
+    platforms = lib.platforms.all;
+  };
+})

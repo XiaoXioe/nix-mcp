@@ -1,14 +1,22 @@
-{ pkgs, ... }:
-pkgs.stdenv.mkDerivation rec {
+{
+  lib,
+  stdenv,
+  runCommand,
+  nodejs,
+  cacert,
+  makeWrapper,
+}:
+
+stdenv.mkDerivation (finalAttrs: {
   pname = "sequential-thinking";
   version = "2026.7.4";
 
   src =
-    pkgs.runCommand "sequential-thinking-src"
+    runCommand "sequential-thinking-src"
       {
         nativeBuildInputs = [
-          pkgs.nodejs
-          pkgs.cacert
+          nodejs
+          cacert
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
@@ -18,17 +26,25 @@ pkgs.stdenv.mkDerivation rec {
         export HOME=$TMPDIR
         mkdir -p $out/lib/sequential-thinking
         cd $out/lib/sequential-thinking
-        npm install --no-audit --no-fund --production @modelcontextprotocol/server-sequential-thinking@${version}
+        npm install --no-audit --no-fund --production @modelcontextprotocol/server-sequential-thinking@${finalAttrs.version}
       '';
 
-  nativeBuildInputs = [ pkgs.makeWrapper ];
+  nativeBuildInputs = [ makeWrapper ];
 
   dontUnpack = true;
 
   installPhase = ''
     mkdir -p $out/bin $out/lib/sequential-thinking
     ln -s $src/lib/sequential-thinking/node_modules $out/lib/sequential-thinking/node_modules
-    makeWrapper ${pkgs.nodejs}/bin/node $out/bin/mcp-server-sequential-thinking \
+    makeWrapper ${nodejs}/bin/node $out/bin/mcp-server-sequential-thinking \
       --add-flags "$out/lib/sequential-thinking/node_modules/@modelcontextprotocol/server-sequential-thinking/dist/index.js"
   '';
-}
+
+  meta = {
+    description = "MCP server for sequential thinking and problem solving";
+    homepage = "https://github.com/modelcontextprotocol/servers/tree/main/src/sequential-thinking";
+    license = lib.licenses.mit;
+    mainProgram = "mcp-server-sequential-thinking";
+    platforms = lib.platforms.all;
+  };
+})

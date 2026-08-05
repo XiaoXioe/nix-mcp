@@ -3,9 +3,11 @@
   buildNpmPackage,
   fetchFromGitHub,
   jq,
+  makeWrapper,
+  nodejs,
 }:
 
-buildNpmPackage rec {
+buildNpmPackage (finalAttrs: {
   pname = "docker-hub-mcp";
   version = "0.18.0";
 
@@ -16,8 +18,8 @@ buildNpmPackage rec {
     hash = "sha256-/LssHTyO/KoLZOjVYQOlEEKATBq4bZ0SdKBC3y1jiO0=";
   };
 
-  # Directly reference jq because buildNpmPackage doesn't pass
-  # nativeBuildInputs through to fetchNpmDeps
+  nativeBuildInputs = [ makeWrapper ];
+
   postPatch = ''
     NEW_PACKAGE_JSON=$(mktemp)
     ${jq}/bin/jq 'del(.devDependencies.esbuild) | del(.optionalDependencies) | del(.packages."".optionalDependencies)' package.json > $NEW_PACKAGE_JSON
@@ -26,6 +28,15 @@ buildNpmPackage rec {
     NEW_LOCKFILE=$(mktemp)
     ${jq}/bin/jq 'walk(if type == "object" then with_entries(select(.key | contains("esbuild") | not)) else . end)' package-lock.json > $NEW_LOCKFILE
     mv $NEW_LOCKFILE package-lock.json
+
+    substituteInPlace src/index.ts \
+      --replace 'return undefined;' 'return process.env.HUB_USERNAME || process.env.DOCKER_USERNAME;'
+  '';
+
+  postInstall = ''
+    mkdir -p $out/bin
+    makeWrapper ${nodejs}/bin/node $out/bin/dockerhub-mcp-server \
+      --add-flags "$out/lib/node_modules/dockerhub-mcp-server/dist/index.js"
   '';
 
   npmDepsFetcherVersion = 2;
@@ -33,10 +44,11 @@ buildNpmPackage rec {
 
   npmDepsHash = "sha256-A2voaOOCP0L0bxuXa5sM9gBV3p+mNh7IjmNd770yeTU=";
 
-  meta = with lib; {
+  meta = {
     description = "Official Docker Hub Model Context Protocol (MCP) server";
     homepage = "https://github.com/docker/hub-mcp";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     mainProgram = "dockerhub-mcp-server";
+    platforms = lib.platforms.all;
   };
-}
+})

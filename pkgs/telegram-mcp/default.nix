@@ -1,14 +1,21 @@
-{ pkgs, ... }:
-pkgs.stdenv.mkDerivation rec {
+{
+  lib,
+  stdenv,
+  runCommand,
+  python313,
+  cacert,
+}:
+
+stdenv.mkDerivation (finalAttrs: {
   pname = "telegram-mcp-jgalea";
   version = "0.1.2";
 
   src =
-    pkgs.runCommand "${pname}-src"
+    runCommand "${finalAttrs.pname}-src"
       {
         nativeBuildInputs = [
-          pkgs.python313
-          pkgs.cacert
+          python313
+          cacert
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
@@ -17,7 +24,7 @@ pkgs.stdenv.mkDerivation rec {
       ''
         export HOME=$TMPDIR
         export PIP_CACHE_DIR=$TMPDIR/pip-cache
-        export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
+        export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
 
         python3.13 -m venv $TMPDIR/venv
 
@@ -25,7 +32,7 @@ pkgs.stdenv.mkDerivation rec {
           --target $out/lib/telegram-mcp \
           --no-cache-dir \
           --no-compile \
-          telegram-mcp-jgalea==${version}
+          telegram-mcp-jgalea==${finalAttrs.version}
 
         # Clean up non-deterministic files
         find $out -name "direct_url.json" -delete
@@ -38,7 +45,7 @@ pkgs.stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     cat <<EOF > $out/bin/telegram-mcp
-    #!${pkgs.python313}/bin/python3
+    #!${python313}/bin/python3
     import sys
     sys.path.insert(0, "$src/lib/telegram-mcp")
     from telegram_mcp.server import main_cli
@@ -47,4 +54,12 @@ pkgs.stdenv.mkDerivation rec {
     EOF
     chmod +x $out/bin/telegram-mcp
   '';
-}
+
+  meta = {
+    description = "Telegram MCP server: give AI tools direct access to your Telegram account";
+    homepage = "https://github.com/jgalea/telegram-mcp";
+    license = lib.licenses.mit;
+    mainProgram = "telegram-mcp";
+    platforms = lib.platforms.all;
+  };
+})
