@@ -20,7 +20,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-QoxzE4t2YcapRex/ADIhsue6/6hR/huiz2Y5BbGPEHc=";
+        outputHash = "sha256-hvimJdVS8VavqCXoP1uPvNdOX67A9xwJeRS8Ck13gxk=";
       }
       ''
         export HOME=$TMPDIR
@@ -35,6 +35,7 @@ stdenv.mkDerivation (finalAttrs: {
           --target $out/lib/google-colab-mcp \
           --no-cache-dir \
           --no-compile \
+          "mcp<2" \
           google-colab-mcp==${finalAttrs.version}
 
         # Clean up non-deterministic files

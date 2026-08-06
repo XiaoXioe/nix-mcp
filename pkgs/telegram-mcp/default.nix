@@ -19,7 +19,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-KwqCZqJdHIy9jnritvGlv83d0aUhqW7/AIdBNPipppc=";
+        outputHash = "sha256-Mu0chAo55TU9QoDZTB91RHHQuZDgE+V2xmXfFrJEqXQ=";
       }
       ''
         export HOME=$TMPDIR
@@ -32,6 +32,7 @@ stdenv.mkDerivation (finalAttrs: {
           --target $out/lib/telegram-mcp \
           --no-cache-dir \
           --no-compile \
+          "mcp<2" \
           telegram-mcp-jgalea==${finalAttrs.version}
 
         # Clean up non-deterministic files
