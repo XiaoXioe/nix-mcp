@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "tavily-mcp";
-  version = "0.2.21";
+  version = "0.2.22";
 
   src =
     runCommand "tavily-mcp-src"
@@ -20,7 +20,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-ehngDsKQj1XPe57t5M50kwl2c3BdMsWSTcID6Wq3Ahc=";
+        outputHash = "sha256-4619Ro9oukZTNtQi2ENUNCzld/CEh6E9UeAe35YVar4=";
       }
       ''
         export HOME=$TMPDIR
