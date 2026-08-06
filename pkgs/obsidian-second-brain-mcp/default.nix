@@ -59,6 +59,28 @@ stdenv.mkDerivation (finalAttrs: {
     cp -r integrations/obsidian-mcp-server/* $out/lib/obsidian-second-brain-mcp/
     cp -r commands $out/lib/obsidian-second-brain-mcp/commands
 
+    # Patch server.py and vault_ops.py for optional folder parameter
+    ${python313}/bin/python3 -c '
+    import os
+    out = os.environ["out"]
+    server_py = os.path.join(out, "lib/obsidian-second-brain-mcp/server.py")
+    vault_ops_py = os.path.join(out, "lib/obsidian-second-brain-mcp/vault_ops.py")
+
+    with open(server_py, "r") as f:
+        code = f.read()
+    code = code.replace("tags: list[str] | None = None,", "tags: list[str] | None = None,\n    folder: str | None = None,")
+    code = code.replace("note_type=type, tags=tags)", "note_type=type, tags=tags, folder=folder)")
+    with open(server_py, "w") as f:
+        f.write(code)
+
+    with open(vault_ops_py, "r") as f:
+        code = f.read()
+    code = code.replace("    tags: Optional[List[str]] = None,\n) -> Dict[str, Any]:", "    tags: Optional[List[str]] = None,\n    folder: Optional[str] = None,\n) -> Dict[str, Any]:")
+    code = code.replace("    inbox = vault / _NOTES_DIR", "    inbox = (vault / folder) if folder else (vault / _NOTES_DIR)")
+    with open(vault_ops_py, "w") as f:
+        f.write(code)
+    '
+
     # Link dependencies
     ln -s $deps/lib/python-deps/* $out/lib/obsidian-second-brain-mcp/
 
