@@ -56,6 +56,11 @@ PACKAGES = {
         "type": "github",
         "file": "pkgs/docker-hub-mcp/default.nix",
         "repo": "docker/hub-mcp"
+    },
+    "obsidian-second-brain-mcp": {
+        "type": "github",
+        "file": "pkgs/obsidian-second-brain-mcp/default.nix",
+        "repo": "eugeniughelbur/obsidian-second-brain"
     }
 }
 
