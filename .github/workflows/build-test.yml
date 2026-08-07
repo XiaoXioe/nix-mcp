@@ -41,4 +41,4 @@ jobs:
 
       - name: Build package
         run: |
-          nix build ".#packages.x86_64-linux.${{ matrix.package }}" --no-link
+          nix build ".#packages.x86_64-linux.${{ matrix.package }}" --no-link -L

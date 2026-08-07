@@ -88,10 +88,10 @@ stdenv.mkDerivation (finalAttrs: {
     # Compile native Node addons (better-sqlite3, etc.)
     export HOME=$TMPDIR
     cd $out/lib/tencentdb-agent-memory
-    npm rebuild
+    npm rebuild --nodedir=${nodejs}
     if [ -d "MemoryKnowledge" ]; then
       cd MemoryKnowledge
-      npm rebuild
+      npm rebuild --nodedir=${nodejs}
     fi
     cd $out
 
