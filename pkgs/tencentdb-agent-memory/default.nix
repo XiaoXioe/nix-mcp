@@ -77,15 +77,34 @@ stdenv.mkDerivation (finalAttrs: {
       mkdir -p $out/lib/tencentdb-agent-memory/MemoryKnowledge
       cp -r MemoryKnowledge/* $out/lib/tencentdb-agent-memory/MemoryKnowledge/
       if [ -d "$deps/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules" ]; then
-        ln -s $deps/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules $out/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules
+        cp -r $deps/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules $out/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules
+        chmod -R +w $out/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules
       fi
     fi
-    ln -s $deps/lib/tencentdb-agent-memory/node_modules $out/lib/tencentdb-agent-memory/node_modules
+    cp -r $deps/lib/tencentdb-agent-memory/node_modules $out/lib/tencentdb-agent-memory/node_modules
+    chmod -R +w $out/lib/tencentdb-agent-memory/node_modules
+
+    # Compile native Node addons (better-sqlite3, etc.)
+    export HOME=$TMPDIR
+    cd $out/lib/tencentdb-agent-memory
+    npm rebuild
+    if [ -d "MemoryKnowledge" ]; then
+      cd MemoryKnowledge
+      npm rebuild
+    fi
+    cd $out
 
     makeWrapper ${nodejs}/bin/node $out/bin/tencentdb-agent-memory \
       --set-default LOG_PATH "\$HOME/.agents/tencent_memory/logs" \
       --set-default TDAI_API_TRACE_ENABLED "false" \
       --add-flags "$out/lib/tencentdb-agent-memory/node_modules/tsx/dist/cli.mjs $out/lib/tencentdb-agent-memory/src/gateway/server.ts"
+
+    if [ -f "MemoryKnowledge/src/server.ts" ]; then
+      makeWrapper ${nodejs}/bin/node $out/bin/tencentdb-agent-knowledge-server \
+        --set-default LOG_PATH "\$HOME/.agents/tencent_memory/logs" \
+        --set-default TDAI_API_TRACE_ENABLED "false" \
+        --add-flags "$out/lib/tencentdb-agent-memory/node_modules/tsx/dist/cli.mjs $out/lib/tencentdb-agent-memory/MemoryKnowledge/src/server.ts"
+    fi
 
     if [ -f "MemoryKnowledge/src/mcp/server.ts" ]; then
       makeWrapper ${nodejs}/bin/node $out/bin/tencentdb-agent-memory-mcp \
