@@ -48,7 +48,7 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s $deps/lib/tencentdb-agent-memory/node_modules $out/lib/tencentdb-agent-memory/node_modules
 
     makeWrapper ${nodejs}/bin/node $out/bin/tencentdb-agent-memory \
-      --add-flags "$out/lib/tencentdb-agent-memory/src/gateway/server.ts"
+      --add-flags "$out/lib/tencentdb-agent-memory/node_modules/tsx/dist/cli.mjs $out/lib/tencentdb-agent-memory/src/gateway/server.ts"
   '';
 
   meta = {
