@@ -48,6 +48,8 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s $deps/lib/tencentdb-agent-memory/node_modules $out/lib/tencentdb-agent-memory/node_modules
 
     makeWrapper ${nodejs}/bin/node $out/bin/tencentdb-agent-memory \
+      --set-default LOG_PATH "\$HOME/.agents/tencent_memory/logs" \
+      --set-default TDAI_API_TRACE_ENABLED "false" \
       --add-flags "$out/lib/tencentdb-agent-memory/node_modules/tsx/dist/cli.mjs $out/lib/tencentdb-agent-memory/src/gateway/server.ts"
   '';
 
