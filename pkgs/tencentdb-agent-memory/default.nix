@@ -79,7 +79,7 @@ stdenv.mkDerivation (finalAttrs: {
       makeWrapper ${nodejs}/bin/node $out/bin/tencentdb-agent-memory-mcp \
         --set-default LOG_PATH "\$HOME/.agents/tencent_memory/logs" \
         --set-default TDAI_API_TRACE_ENABLED "false" \
-        --add-flags "$out/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules/tsx/dist/cli.mjs $out/lib/tencentdb-agent-memory/MemoryKnowledge/src/mcp/server.ts"
+        --add-flags "$out/lib/tencentdb-agent-memory/node_modules/tsx/dist/cli.mjs $out/lib/tencentdb-agent-memory/MemoryKnowledge/src/mcp/server.ts"
     fi
   '';
 
