@@ -27,9 +27,6 @@ stdenv.mkDerivation (finalAttrs: {
         nativeBuildInputs = [
           nodejs
           cacert
-          python3
-          pkg-config
-          stdenv.cc
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
@@ -42,20 +39,24 @@ stdenv.mkDerivation (finalAttrs: {
         cp -r ${finalAttrs.src}/MemoryCore/* $TMPDIR/build-core/
         chmod -R +w $TMPDIR/build-core
         cd $TMPDIR/build-core
-        npm install --no-audit --no-fund --production
+        npm install --ignore-scripts --no-audit --no-fund --production
         cp -r node_modules $out/lib/tencentdb-agent-memory/
 
         if [ -d "${finalAttrs.src}/MemoryKnowledge" ]; then
           cp -r ${finalAttrs.src}/MemoryKnowledge/* $TMPDIR/build-knowledge/
           chmod -R +w $TMPDIR/build-knowledge
           cd $TMPDIR/build-knowledge
-          npm install --no-audit --no-fund --production
+          npm install --ignore-scripts --no-audit --no-fund --production
           mkdir -p $out/lib/tencentdb-agent-memory/MemoryKnowledge
           cp -r node_modules $out/lib/tencentdb-agent-memory/MemoryKnowledge/
         fi
       '';
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [
+    makeWrapper
+    python3
+    pkg-config
+  ];
 
   installPhase = ''
     mkdir -p $out/bin $out/lib/tencentdb-agent-memory
