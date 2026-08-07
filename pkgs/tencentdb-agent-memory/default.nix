@@ -52,6 +52,13 @@ stdenv.mkDerivation (finalAttrs: {
         fi
       '';
 
+  postPatch = ''
+    if [ -f MemoryKnowledge/src/logger.ts ]; then
+      substituteInPlace MemoryKnowledge/src/logger.ts \
+        --replace "console.log" "console.error"
+    fi
+  '';
+
   nativeBuildInputs = [
     makeWrapper
     python3
