@@ -16,7 +16,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "TencentCloud";
     repo = "TencentDB-Agent-Memory";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-G8BSb+RjY3MxNSEQ+z54QLEJTXYxwUP9IqD4G1TKUKs=";
   };
 
   deps =

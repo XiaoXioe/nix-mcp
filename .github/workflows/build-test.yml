@@ -24,6 +24,7 @@ jobs:
           - sequential-thinking
           - docker-hub-mcp
           - obsidian-second-brain-mcp
+          - tencentdb-agent-memory
       fail-fast: false
     steps:
       - name: Checkout repository
