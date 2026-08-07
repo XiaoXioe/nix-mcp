@@ -57,6 +57,11 @@ stdenv.mkDerivation (finalAttrs: {
       substituteInPlace MemoryKnowledge/src/logger.ts \
         --replace "console.log" "console.error"
     fi
+    if [ -f MemoryKnowledge/src/mcp/http-client.ts ]; then
+      substituteInPlace MemoryKnowledge/src/mcp/http-client.ts \
+        --replace 'const headers: Record<string, string> = { "Content-Type": "application/json" };' \
+                  'const headers: Record<string, string> = { "Content-Type": "application/json" }; if (process.env.KNOWLEDGE_SERVICE_ID) headers["x-tdai-service-id"] = process.env.KNOWLEDGE_SERVICE_ID;'
+    fi
   '';
 
   nativeBuildInputs = [
