@@ -6,6 +6,8 @@
   nodejs,
   cacert,
   makeWrapper,
+  python3,
+  pkg-config,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -25,6 +27,9 @@ stdenv.mkDerivation (finalAttrs: {
         nativeBuildInputs = [
           nodejs
           cacert
+          python3
+          pkg-config
+          stdenv.cc
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
