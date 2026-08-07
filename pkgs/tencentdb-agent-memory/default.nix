@@ -67,10 +67,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   installPhase = ''
     mkdir -p $out/bin $out/lib/tencentdb-agent-memory
-    cp -r $src/MemoryCore/* $out/lib/tencentdb-agent-memory/
-    if [ -d "$src/MemoryKnowledge" ]; then
+    cp -r MemoryCore/* $out/lib/tencentdb-agent-memory/
+    if [ -d "MemoryKnowledge" ]; then
       mkdir -p $out/lib/tencentdb-agent-memory/MemoryKnowledge
-      cp -r $src/MemoryKnowledge/* $out/lib/tencentdb-agent-memory/MemoryKnowledge/
+      cp -r MemoryKnowledge/* $out/lib/tencentdb-agent-memory/MemoryKnowledge/
       if [ -d "$deps/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules" ]; then
         ln -s $deps/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules $out/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules
       fi
@@ -82,7 +82,7 @@ stdenv.mkDerivation (finalAttrs: {
       --set-default TDAI_API_TRACE_ENABLED "false" \
       --add-flags "$out/lib/tencentdb-agent-memory/node_modules/tsx/dist/cli.mjs $out/lib/tencentdb-agent-memory/src/gateway/server.ts"
 
-    if [ -f "$src/MemoryKnowledge/src/mcp/server.ts" ]; then
+    if [ -f "MemoryKnowledge/src/mcp/server.ts" ]; then
       makeWrapper ${nodejs}/bin/node $out/bin/tencentdb-agent-memory-mcp \
         --set-default LOG_PATH "\$HOME/.agents/tencent_memory/logs" \
         --set-default TDAI_API_TRACE_ENABLED "false" \
