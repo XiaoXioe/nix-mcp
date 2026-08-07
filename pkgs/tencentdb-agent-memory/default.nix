@@ -68,6 +68,7 @@ stdenv.mkDerivation (finalAttrs: {
     makeWrapper
     python3
     pkg-config
+    nodejs
   ];
 
   installPhase = ''
