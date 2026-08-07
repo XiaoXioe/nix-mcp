@@ -8,6 +8,7 @@
   makeWrapper,
   python3,
   pkg-config,
+  node-gyp,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -69,6 +70,7 @@ stdenv.mkDerivation (finalAttrs: {
     python3
     pkg-config
     nodejs
+    node-gyp
   ];
 
   installPhase = ''
@@ -85,13 +87,11 @@ stdenv.mkDerivation (finalAttrs: {
     cp -r $deps/lib/tencentdb-agent-memory/node_modules $out/lib/tencentdb-agent-memory/node_modules
     chmod -R +w $out/lib/tencentdb-agent-memory/node_modules
 
-    # Compile native Node addons (better-sqlite3, etc.)
+    # Compile native Node addons (better-sqlite3) using node-gyp directly
     export HOME=$TMPDIR
-    cd $out/lib/tencentdb-agent-memory
-    npm rebuild --nodedir=${nodejs} --dangerously-allow-all-scripts
-    if [ -d "MemoryKnowledge" ]; then
-      cd MemoryKnowledge
-      npm rebuild --nodedir=${nodejs} --dangerously-allow-all-scripts
+    if [ -d "$out/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules/better-sqlite3" ]; then
+      cd $out/lib/tencentdb-agent-memory/MemoryKnowledge/node_modules/better-sqlite3
+      node-gyp rebuild --nodedir=${nodejs}
     fi
     cd $out
 
