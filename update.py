@@ -61,6 +61,11 @@ PACKAGES = {
         "type": "github",
         "file": "pkgs/obsidian-second-brain-mcp/default.nix",
         "repo": "eugeniughelbur/obsidian-second-brain"
+    },
+    "tencentdb-agent-memory": {
+        "type": "github",
+        "file": "pkgs/tencentdb-agent-memory/default.nix",
+        "repo": "TencentCloud/TencentDB-Agent-Memory"
     }
 }
 
