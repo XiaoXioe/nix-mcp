@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "ssh-mcp";
-  version = "1.5.0";
+  version = "2.0.3";
 
   src =
     runCommand "ssh-mcp-src"
@@ -20,7 +20,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-LgWZ3yEY6e7GMfk41hsL1/fYvqetAz20BGILEEE6ruA=";
+        outputHash = "sha256-HkF/6PQyszA6zs5hfBvXkY7eGggGJ2putmIN+z9rqvQ=";
       }
       ''
         export HOME=$TMPDIR
