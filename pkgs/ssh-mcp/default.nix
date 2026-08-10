@@ -14,7 +14,7 @@ buildNpmPackage (finalAttrs: {
     owner = "tufantunc";
     repo = "ssh-mcp";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-HDnl1gH9kTvzT343yN+PAGDLEHZRV84TZQFoohrZvdo=";
   };
 
   npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
