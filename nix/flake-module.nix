@@ -6,6 +6,9 @@
       # All packages: `nix build .#ssh-mcp`, `nix build .#tavily-mcp`, etc.
       packages = import ../pkgs { inherit pkgs; };
 
+      # `nix flake check` builds all packages
+      checks = config.packages;
+
       devShells.default = pkgs.mkShell {
         packages = [
           pkgs.python3
