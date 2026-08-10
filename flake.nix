@@ -3,40 +3,19 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?shallow=1&ref=nixos-26.05";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
   };
 
   outputs =
-    { self, nixpkgs, ... }:
-    let
-      supportedSystems = [
+    inputs @ { flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-    in
-    {
-      packages = forAllSystems (
-        system:
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        in
-        {
-          ssh-mcp = pkgs.callPackage ./pkgs/ssh-mcp/default.nix { };
-          codebase-memory-mcp = pkgs.callPackage ./pkgs/codebase-memory-mcp/default.nix { };
-          google-colab-mcp = pkgs.callPackage ./pkgs/google-colab-mcp/default.nix { };
-          telegram-mcp = pkgs.callPackage ./pkgs/telegram-mcp/default.nix { };
-          github-mcp-server = pkgs.callPackage ./pkgs/github-mcp-server/default.nix { };
-          tavily-mcp = pkgs.callPackage ./pkgs/tavily-mcp/default.nix { };
-          server-memory = pkgs.callPackage ./pkgs/server-memory/default.nix { };
-          agentmemory = pkgs.callPackage ./pkgs/agentmemory/default.nix { };
-          sequential-thinking = pkgs.callPackage ./pkgs/sequential-thinking/default.nix { };
-          docker-hub-mcp = pkgs.callPackage ./pkgs/docker-hub-mcp/default.nix { };
-          obsidian-second-brain-mcp = pkgs.callPackage ./pkgs/obsidian-second-brain-mcp/default.nix { };
-          scrapling = pkgs.callPackage ./pkgs/scrapling/default.nix { };
-        }
-      );
+      imports = [ ./nix/flake-module.nix ];
     };
 }

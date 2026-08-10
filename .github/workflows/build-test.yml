@@ -2,14 +2,30 @@ name: Build Test MCP Packages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, 'refactor/**' ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
 
 jobs:
+  # Validate flake structure (fast, no build)
+  flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+
+      - name: Validate flake outputs structure
+        run: |
+          nix flake check --no-build
+
+  # Build each package in parallel
   build:
     runs-on: ubuntu-latest
+    needs: flake-check
     strategy:
       matrix:
         package:
