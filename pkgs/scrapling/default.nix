@@ -5,6 +5,7 @@
   python313,
   cacert,
   makeWrapper,
+  zlib,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -47,6 +48,7 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     mkdir -p $out/bin
     makeWrapper ${python313}/bin/python3 $out/bin/scrapling \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ stdenv.cc.cc.lib zlib ]}" \
       --add-flags "-c \"import sys, scrapling.cli; sys.argv[0] = 'scrapling'; sys.argv.append('mcp') if len(sys.argv) == 1 else None; sys.exit(scrapling.cli.main())\"" \
       --set PYTHONPATH "$src/lib/scrapling"
   '';
