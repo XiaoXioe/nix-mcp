@@ -1,41 +1,27 @@
 {
   lib,
-  stdenv,
-  runCommand,
-  nodejs,
-  cacert,
+  buildNpmPackage,
+  fetchFromGitHub,
   makeWrapper,
+  nodejs,
 }:
 
-stdenv.mkDerivation (finalAttrs: {
+buildNpmPackage (finalAttrs: {
   pname = "ssh-mcp";
   version = "2.0.3";
 
-  src =
-    runCommand "ssh-mcp-src"
-      {
-        nativeBuildInputs = [
-          nodejs
-          cacert
-        ];
-        outputHashAlgo = "sha256";
-        outputHashMode = "recursive";
-        outputHash = "sha256-HkF/6PQyszA6zs5hfBvXkY7eGggGJ2putmIN+z9rqvQ=";
-      }
-      ''
-        export HOME=$TMPDIR
-        mkdir -p $out/lib
-        cd $out/lib
-        npm install --no-audit --no-fund --production ssh-mcp@${finalAttrs.version}
-      '';
+  src = fetchFromGitHub {
+    owner = "tufantunc";
+    repo = "ssh-mcp";
+    rev = "v${finalAttrs.version}";
+    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  };
+
+  npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
 
   nativeBuildInputs = [ makeWrapper ];
 
-  dontUnpack = true;
-
-  installPhase = ''
-    mkdir -p $out/bin $out/lib
-    ln -s $src/lib/node_modules $out/lib/node_modules
+  postInstall = ''
     makeWrapper ${nodejs}/bin/node $out/bin/ssh-mcp \
       --add-flags "$out/lib/node_modules/ssh-mcp/build/index.js"
   '';
