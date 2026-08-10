@@ -47,7 +47,7 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     mkdir -p $out/bin
     makeWrapper ${python313}/bin/python3 $out/bin/scrapling \
-      --add-flags "-m scrapling mcp" \
+      --add-flags "-c \"import sys, scrapling.cli; sys.argv[0] = 'scrapling'; sys.argv.append('mcp') if len(sys.argv) == 1 else None; sys.exit(scrapling.cli.main())\"" \
       --set PYTHONPATH "$src/lib/scrapling"
   '';
 
