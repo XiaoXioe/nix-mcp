@@ -66,6 +66,11 @@ PACKAGES = {
         "type": "github",
         "file": "pkgs/tencentdb-agent-memory/default.nix",
         "repo": "TencentCloud/TencentDB-Agent-Memory"
+    },
+    "scrapling": {
+        "type": "pypi",
+        "file": "pkgs/scrapling/default.nix",
+        "pypi_name": "scrapling"
     }
 }
 

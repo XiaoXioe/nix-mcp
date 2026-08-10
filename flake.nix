@@ -35,6 +35,7 @@
           sequential-thinking = pkgs.callPackage ./pkgs/sequential-thinking/default.nix { };
           docker-hub-mcp = pkgs.callPackage ./pkgs/docker-hub-mcp/default.nix { };
           obsidian-second-brain-mcp = pkgs.callPackage ./pkgs/obsidian-second-brain-mcp/default.nix { };
+          scrapling = pkgs.callPackage ./pkgs/scrapling/default.nix { };
         }
       );
     };
