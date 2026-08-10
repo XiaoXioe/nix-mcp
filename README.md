@@ -110,6 +110,56 @@ in
 
 ---
 
+## Using the Overlay
+
+The flake exports an `overlay` that injects all MCP server packages directly into your `pkgs`:
+
+```nix
+# In your system flake.nix
+{
+  inputs.nix-mcp = {
+    url = "github:XiaoXioe/nix-mcp";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = { nixpkgs, nix-mcp, ... }: {
+    nixosConfigurations.mymachine = nixpkgs.lib.nixosSystem {
+      modules = [{
+        nixpkgs.overlays = [ nix-mcp.overlays.default ];
+        # Now pkgs.ssh-mcp, pkgs.tavily-mcp, etc. are available everywhere
+      }];
+    };
+  };
+}
+```
+
+---
+
+## Using the Home Manager Module
+
+The flake exports a `homeModules.default` for declarative MCP server management:
+
+```nix
+# In your home configuration (home.nix or equivalent)
+{
+  imports = [ inputs.nix-mcp.homeModules.default ];
+
+  programs.nix-mcp = {
+    enable = true;
+    enabledServers = [
+      "ssh-mcp"
+      "tavily-mcp"
+      "sequential-thinking"
+      "telegram-mcp"
+    ];
+  };
+}
+```
+
+Available server names: `ssh-mcp`, `codebase-memory-mcp`, `google-colab-mcp`, `telegram-mcp`, `github-mcp-server`, `tavily-mcp`, `server-memory`, `agentmemory`, `sequential-thinking`, `docker-hub-mcp`, `obsidian-second-brain-mcp`, `scrapling`.
+
+---
+
 ## Automated Updates
 
 This repository comes with an automated update script (`update.py`) that queries PyPI, npm, and GitHub APIs daily via GitHub Actions. It automatically checks for new versions of the MCP servers, updates version tags, prefetches the new content hashes, and commits the updates.
