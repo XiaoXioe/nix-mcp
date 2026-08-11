@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "scrapling";
-  version = "0.4.13";
+  version = "0.4.14";
 
   src =
     runCommand "${finalAttrs.pname}-src"
@@ -21,7 +21,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-+QhmLXk9VTJO2SmAJhRZpr7bqGQUPA0SWk/L9fqAaTM=";
+        outputHash = "sha256-Oykcspk71w0HlnjOa/aKYxt79wCRPuWV76S3rjTevVM=";
       }
       ''
         export HOME=$TMPDIR
