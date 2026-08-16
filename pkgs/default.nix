@@ -12,4 +12,5 @@
   docker-hub-mcp = pkgs.callPackage ./docker-hub-mcp/default.nix { };
   obsidian-second-brain-mcp = pkgs.callPackage ./obsidian-second-brain-mcp/default.nix { };
   scrapling = pkgs.callPackage ./scrapling/default.nix { };
+  ai-memory = pkgs.callPackage ./ai-memory/default.nix { };
 }
