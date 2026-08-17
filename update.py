@@ -5,8 +5,20 @@ import re
 import subprocess
 import sys
 import os
+import hashlib
+import base64
 
 PACKAGES = {
+    "ai-memory": {
+        "type": "github-multi-binary",
+        "file": "pkgs/ai-memory/default.nix",
+        "repo": "akitaonrails/ai-memory",
+        "assets": {
+            "x86_64-linux": "https://github.com/akitaonrails/ai-memory/releases/download/v{version}/ai-memory-linux-x86_64.tar.gz",
+            "aarch64-linux": "https://github.com/akitaonrails/ai-memory/releases/download/v{version}/ai-memory-linux-aarch64.tar.gz",
+            "hooksSrc": "https://github.com/akitaonrails/ai-memory/releases/download/v{version}/ai-memory-hooks.tar.gz"
+        }
+    },
     "ssh-mcp": {
         "type": "npm",
         "file": "pkgs/ssh-mcp/default.nix",
@@ -76,6 +88,14 @@ PACKAGES = {
 
 DUMMY_HASH = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 
+def prefetch_sri_hash(url):
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    hasher = hashlib.sha256()
+    with urllib.request.urlopen(req) as r:
+        while chunk := r.read(65536):
+            hasher.update(chunk)
+    return f"sha256-{base64.b64encode(hasher.digest()).decode('utf-8')}"
+
 def get_latest_version(pkg_name, info):
     try:
         if info["type"] == "pypi":
@@ -90,7 +110,7 @@ def get_latest_version(pkg_name, info):
             with urllib.request.urlopen(req) as response:
                 data = json.loads(response.read().decode())
                 return data["version"]
-        elif info["type"] == "github":
+        elif info["type"] in ("github", "github-multi-binary"):
             url = f"https://api.github.com/repos/{info['repo']}/releases/latest"
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
             with urllib.request.urlopen(req) as response:
@@ -100,6 +120,44 @@ def get_latest_version(pkg_name, info):
     except Exception as e:
         print(f"Error fetching version for {pkg_name}: {e}")
         return None
+
+def update_multi_binary_package(name, info, current_version, latest_version, content):
+    filepath = info["file"]
+    print(f"    Prefetching asset hashes for {name} v{latest_version}...")
+    new_content = content.replace(f'version = "{current_version}";', f'version = "{latest_version}";')
+    
+    for key, url_template in info["assets"].items():
+        old_url = url_template.format(version=current_version)
+        new_url = url_template.format(version=latest_version)
+        old_hash = prefetch_sri_hash(old_url)
+        new_hash = prefetch_sri_hash(new_url)
+        print(f"    Asset {key}: {new_hash}")
+        if old_hash in new_content:
+            new_content = new_content.replace(old_hash, new_hash)
+
+    with open(filepath, "w") as f:
+        f.write(new_content)
+
+    subprocess.run(["git", "add", filepath], check=True)
+
+    print(f"    Verifying build with new hashes...")
+    build_cmd = ["nix", "build", f".#packages.x86_64-linux.{name}", "--no-link", "--extra-experimental-features", "nix-command flakes"]
+    verify_res = subprocess.run(build_cmd, capture_output=True, text=True)
+    if verify_res.returncode != 0:
+        print(f"    Verification build failed:")
+        print(verify_res.stderr)
+        with open(filepath, "w") as f:
+            f.write(content)
+        subprocess.run(["git", "add", filepath], check=True)
+        return False
+
+    print(f"[✓] Successfully updated {name} to version {latest_version}!")
+    diff_res = subprocess.run(["git", "diff", "--cached", "--quiet"])
+    if diff_res.returncode != 0:
+        commit_msg = f"chore(deps): bump {name} from {current_version} to {latest_version}"
+        subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+        print(f"    Committed update: {commit_msg}")
+    return True
 
 def update_package(name, info, latest_version):
     filepath = info["file"]
@@ -122,6 +180,9 @@ def update_package(name, info, latest_version):
         return False
 
     print(f"[+] Updating {name} from {current_version} to {latest_version}...")
+
+    if info.get("type") == "github-multi-binary":
+        return update_multi_binary_package(name, info, current_version, latest_version, content)
 
     # Parse current hash
     hash_match = re.search(r'(sha256|outputHash)\s*=\s*"([^"]+)";', content)
