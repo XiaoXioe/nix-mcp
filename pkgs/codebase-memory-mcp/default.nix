@@ -10,11 +10,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "codebase-memory-mcp";
-  version = "0.10.6";
+  version = "0.10.8";
 
   src = fetchurl {
     url = "https://github.com/DeusData/codebase-memory-mcp/releases/download/v${finalAttrs.version}/codebase-memory-mcp-linux-amd64.tar.gz";
-    sha256 = "sha256-E7KRk6iivMEhs1UaLI0m8u3L3XEo5mkM+OPkaMqWxPE=";
+    sha256 = "sha256-5cukytbKglSoX0UEH8ioMZCNfVy2T5j8P463ClhnF5M=";
   };
 
   sourceRoot = ".";
