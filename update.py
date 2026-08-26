@@ -83,6 +83,11 @@ PACKAGES = {
         "type": "pypi",
         "file": "pkgs/scrapling/default.nix",
         "pypi_name": "scrapling"
+    },
+    "free-search-mcp": {
+        "type": "pypi",
+        "file": "pkgs/free-search-mcp/default.nix",
+        "pypi_name": "free-search-mcp"
     }
 }
 

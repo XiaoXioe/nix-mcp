@@ -13,4 +13,5 @@
   obsidian-second-brain-mcp = pkgs.callPackage ./obsidian-second-brain-mcp/default.nix { };
   scrapling = pkgs.callPackage ./scrapling/default.nix { };
   ai-memory = pkgs.callPackage ./ai-memory/default.nix { };
+  free-search-mcp = pkgs.callPackage ./free-search-mcp/default.nix { };
 }
