@@ -8,16 +8,16 @@
 
 let
   pname = "ai-memory";
-  version = "1.32.1";
+  version = "1.32.2";
 
   sources = {
     x86_64-linux = {
       url = "https://github.com/akitaonrails/ai-memory/releases/download/v${version}/ai-memory-linux-x86_64.tar.gz";
-      hash = "sha256-L8X2VfbCczFXHBzxPwXEqscm+wFnWiN5DEwRS1lkcjI=";
+      hash = "sha256-C/v/IblXyierkKuVWHgYaBwizbskgaNBxL1PUid2ZdU=";
     };
     aarch64-linux = {
       url = "https://github.com/akitaonrails/ai-memory/releases/download/v${version}/ai-memory-linux-aarch64.tar.gz";
-      hash = "sha256-Fkgr50Pqkzt84VC+ODh3Owv5Ot/TEMQSfOg9M3JUSmk=";
+      hash = "sha256-lP00jExjRAEF3ElWmKxU9oAbmj3dtyT8Kaj8PQeV81Q=";
     };
   };
 
@@ -25,7 +25,7 @@ let
 
   hooksSrc = fetchurl {
     url = "https://github.com/akitaonrails/ai-memory/releases/download/v${version}/ai-memory-hooks.tar.gz";
-    hash = "sha256-XJuLihrn8d1pyB6M6jZrPW+ZxyNpR/MGPGDb3HO6laY=";
+    hash = "sha256-bYH0tZniMUYzUCSJ0XMIYdY47Ff/3foqnfyZ0e1OG34=";
   };
 in
 stdenv.mkDerivation {
