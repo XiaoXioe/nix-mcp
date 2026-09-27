@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "obsidian-second-brain-mcp";
-  version = "0.16.0";
+  version = "0.17.0";
 
   src = fetchFromGitHub {
     owner = "eugeniughelbur";
@@ -28,7 +28,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-E0Jx2CRRV9i+0OVY7Ck6cw0ofT9WwcdP40RbxznKjoA=";
+        outputHash = "sha256-ZuSpyI52j4hiVoVVmXHmdHJmPZb1J1Q2L2E8mI/W0rY=";
       }
       ''
         export HOME=$TMPDIR
