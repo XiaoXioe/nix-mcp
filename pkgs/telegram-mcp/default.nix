@@ -8,7 +8,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "telegram-mcp-jgalea";
-  version = "0.1.2";
+  version = "0.2.1";
 
   src =
     runCommand "${finalAttrs.pname}-src"
@@ -19,7 +19,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-Mu0chAo55TU9QoDZTB91RHHQuZDgE+V2xmXfFrJEqXQ=";
+        outputHash = "sha256-VmVjCz1Pvg9mtbh0COAcJ0Rk2pVbKw9rX7l8mMjV+Zs=";
       }
       ''
         export HOME=$TMPDIR
