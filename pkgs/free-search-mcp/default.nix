@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "free-search-mcp";
-  version = "0.17.0";
+  version = "0.18.0";
 
   src =
     runCommand "${finalAttrs.pname}-src"
@@ -21,7 +21,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-nKUBY8XWEUBvKiJDg/aD9yrzuEuT3z1ZYMq8SfHL568=";
+        outputHash = "sha256-tIaakf7d6aFlWnb7MYF9vlhem8Xu3D30MRldJSJACk0=";
       }
       ''
         export HOME=$TMPDIR
