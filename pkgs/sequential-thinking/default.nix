@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "sequential-thinking";
-  version = "2.0.0";
+  version = "2.1.1";
 
   src =
     runCommand "sequential-thinking-src"
@@ -20,7 +20,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-A5NgSp8MiIXPnjznsXrydfxmCCUhVxicW6pXwkkJcfY=";
+        outputHash = "sha256-4yGtXacgorlKkc8MgUP2MW89yVUBNGVSjfs3xn4u424=";
       }
       ''
         export HOME=$TMPDIR
