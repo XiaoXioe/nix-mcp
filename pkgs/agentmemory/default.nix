@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "agentmemory";
-  version = "0.9.31";
+  version = "0.9.32";
 
   src =
     runCommand "agentmemory-src"
@@ -20,7 +20,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-YVO8Sl3Our8sLtQW838ftxaovY9JfyKSPrMyjEu/K6s=";
+        outputHash = "sha256-7iNxV6i9Mdn4svv39e3jcLFVX6baw1JIXpQZYrXEM1M=";
       }
       ''
         export HOME=$TMPDIR
