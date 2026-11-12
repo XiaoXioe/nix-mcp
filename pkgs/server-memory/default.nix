@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "server-memory";
-  version = "2.1.0";
+  version = "2.1.1";
 
   src =
     runCommand "server-memory-src"
@@ -20,7 +20,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-gxTvP/kUtwtloTXTJ1JrB2imjBvVo5n0co7al0WdstQ=";
+        outputHash = "sha256-c+lElKGNH42XJ3wGETbNUc4bYAyEqOd6ZKx0L2PJ3vw=";
       }
       ''
         export HOME=$TMPDIR
