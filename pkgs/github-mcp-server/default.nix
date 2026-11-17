@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "github-mcp-server";
-  version = "2.1.0";
+  version = "2.2.0";
 
   src =
     runCommand "${finalAttrs.pname}-src"
@@ -20,7 +20,7 @@ stdenv.mkDerivation (finalAttrs: {
         ];
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "sha256-GCjKlRjsXCWNYM6DlX4czOW5Asc6cz5AA7BpBxfWqqk=";
+        outputHash = "sha256-5BlqZ0aFi8tjuIPNsBE93JstmNk5ru1jXYnGnk7ExCw=";
       }
       ''
         export HOME=$TMPDIR
